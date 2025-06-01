@@ -12,7 +12,8 @@ axios.defaults.baseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
 export const AppContext = createContext();
 
 export const AppContextProvider = ({children}) => {
-
+    
+    const [selectedProductId, setSelectedProductId] = useState(null);
     const [user, setUser, ] = useState(null);
     const [product, setProduct] = useState([]);
 
@@ -59,7 +60,7 @@ export const AppContextProvider = ({children}) => {
     }, [])
 
 
-    const value = {axios, user, setUser, product, setProduct, fetchAllProduct, fetchProductById }
+    const value = {axios, user, setUser, product, setProduct, fetchAllProduct, fetchProductById, selectedProductId, setSelectedProductId }
 
     return <AppContext.Provider value = {value}>
         {children}

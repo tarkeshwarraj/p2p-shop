@@ -25,12 +25,15 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={` antialiased`}>
         <AppContextProvider>
+          <div className="min-h-screen flex flex-col">
+
         <Navbar/>
         <ToastContainer position="top-right" autoClose={3000} />
-        <div className=" md:px-16 lg:px-24 xl:px-32">
+        <main className="flex-grow md:px-16 lg:px-24 xl:px-32">
         {children}
-        </div>
+        </main>
         <Footer/>
+          </div>
         </AppContextProvider>
       </body>
     </html>

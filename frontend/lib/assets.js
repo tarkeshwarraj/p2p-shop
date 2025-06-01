@@ -7,7 +7,5 @@ export const assets = {
 
 export const image = [
   "/noImage.jpg",
-  "/noImage.jpg",
   "/shoes.png",
-  "/noImage.jpg",
 ];

@@ -4,7 +4,7 @@ import Link from "next/link";
 // components/Footer.jsx
 export default function Footer() {
   return (
-    <footer className="px-6 md:px-16 lg:px-24 xl:px-32 pt-8 w-full text-gray-500">
+    <footer className="px-6 md:px-16 lg:px-24 xl:px-32 pt-8 w-full text-gray-500 mt-8">
     <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500/30 pb-6">
         <div className="md:max-w-96">
             <Image className="h-9 w-auto" src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/dummyLogo/dummyLogoDark.svg" alt="dummyLogoDark" width={150} height={36} />

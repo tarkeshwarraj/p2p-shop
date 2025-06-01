@@ -5,9 +5,11 @@ import { ChevronDown, ChevronUp, Send } from "lucide-react";
 import { useAppContext } from "@/context/AppContext";
 import { assets, image } from "@/lib/assets";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const ProductDetailsPage = ({ params }) => {
-  const { axios, fetchProductById } = useAppContext();
+
+  const { axios, fetchProductById, setSelectedProductId, selectedProductId  } = useAppContext();
   const [singleProduct, setSingleProduct] = useState(null);
   const { id } = use(params); // unwrap params
   const [showDetails, setShowDetails] = useState(false);
@@ -17,8 +19,7 @@ const ProductDetailsPage = ({ params }) => {
     { from: "user", text: "Hello, is this product available?" },
     { from: "seller", text: "Yes, it's available!" },
   ]);
-  const rating = singleProduct?.userId?.rating || 1;
-  // const [thumbnail, setThumbnail] = useState(singleProduct.images[0]);
+  const router = useRouter();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -32,6 +33,11 @@ const ProductDetailsPage = ({ params }) => {
     };
     getProduct();
   }, [id, fetchProductById]);
+
+  const handleBuyNow = () => {
+    setSelectedProductId(singleProduct._id);
+    router.push("/order/confirmation");
+  }
 
   const handleSend = () => {
     if (message.trim()) {
@@ -47,11 +53,9 @@ const ProductDetailsPage = ({ params }) => {
     }
   };
 
-  console.log(singleProduct);
-
   return (
-    <div className="p-4 min-h-screen bg-gray-50">
-      <div className="flex flex-col md:flex-row gap-4 h-[calc(100vh-120px)]">
+    <div className="p-4 h-[calc(100vh-160px)] bg-gray-50">
+      <div className="flex flex-col md:flex-row gap-4 h-[calc(100vh-200px)]">
         {/* Product Details Section */}
         <div className="w-full md:w-2/3 h-full overflow-hidden">
           {/* Mobile toggle */}
@@ -83,7 +87,10 @@ const ProductDetailsPage = ({ params }) => {
                 <div className="flex flex-col md:flex-row gap-16 mt-4">
                   <div className="flex gap-3">
                     <div className="flex flex-col gap-3">
-                      {(singleProduct.images.length > 0 ? singleProduct.images : image ) // default image from assets
+                      {(singleProduct.images.length > 0
+                        ? singleProduct.images
+                        : image
+                      ) // default image from assets
                         .map((img, index) => (
                           <div
                             key={index}
@@ -117,34 +124,34 @@ const ProductDetailsPage = ({ params }) => {
 
                     <div className="flex items-center gap-0.5 mt-1">
                       {Array(5)
-  .fill("")
-  .map((_, i) =>
-    singleProduct.userId.rating > i ? (
-      <svg
-        key={i}
-        width="20"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="text-yellow-400 drop-shadow-md"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.294 3.983a1 1 0 0 0 .951.69h4.188c.969 0 1.371 1.24.588 1.81l-3.388 2.46a1 1 0 0 0-.364 1.118l1.295 3.983c.299.921-.756 1.688-1.54 1.118L10.589 15.63a1 1 0 0 0-1.176 0l-3.389 2.46c-.783.57-1.838-.197-1.539-1.118L5.78 12.99a1 1 0 0 0-.363-1.118L2.028 9.41c-.783-.57-.38-1.81.588-1.81h4.188a1 1 0 0 0 .95-.69L9.049 2.927z" />
-      </svg>
-    ) : (
-      <svg
-        key={i}
-        width="20"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="text-gray-300"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.294 3.983a1 1 0 0 0 .951.69h4.188c.969 0 1.371 1.24.588 1.81l-3.388 2.46a1 1 0 0 0-.364 1.118l1.295 3.983c.299.921-.756 1.688-1.54 1.118L10.589 15.63a1 1 0 0 0-1.176 0l-3.389 2.46c-.783.57-1.838-.197-1.539-1.118L5.78 12.99a1 1 0 0 0-.363-1.118L2.028 9.41c-.783-.57-.38-1.81.588-1.81h4.188a1 1 0 0 0 .95-.69L9.049 2.927z" />
-      </svg>
-    )
-  )}
+                        .fill("")
+                        .map((_, i) =>
+                          singleProduct.userId.rating > i ? (
+                            <svg
+                              key={i}
+                              width="20"
+                              height="20"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              className="text-yellow-400 drop-shadow-md"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.294 3.983a1 1 0 0 0 .951.69h4.188c.969 0 1.371 1.24.588 1.81l-3.388 2.46a1 1 0 0 0-.364 1.118l1.295 3.983c.299.921-.756 1.688-1.54 1.118L10.589 15.63a1 1 0 0 0-1.176 0l-3.389 2.46c-.783.57-1.838-.197-1.539-1.118L5.78 12.99a1 1 0 0 0-.363-1.118L2.028 9.41c-.783-.57-.38-1.81.588-1.81h4.188a1 1 0 0 0 .95-.69L9.049 2.927z" />
+                            </svg>
+                          ) : (
+                            <svg
+                              key={i}
+                              width="20"
+                              height="20"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              className="text-gray-300"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.294 3.983a1 1 0 0 0 .951.69h4.188c.969 0 1.371 1.24.588 1.81l-3.388 2.46a1 1 0 0 0-.364 1.118l1.295 3.983c.299.921-.756 1.688-1.54 1.118L10.589 15.63a1 1 0 0 0-1.176 0l-3.389 2.46c-.783.57-1.838-.197-1.539-1.118L5.78 12.99a1 1 0 0 0-.363-1.118L2.028 9.41c-.783-.57-.38-1.81.588-1.81h4.188a1 1 0 0 0 .95-.69L9.049 2.927z" />
+                            </svg>
+                          )
+                        )}
                     </div>
 
                     <div className="mt-6">
@@ -162,7 +169,7 @@ const ProductDetailsPage = ({ params }) => {
                     </ul>
 
                     <div className="flex items-center mt-10 gap-4 text-base">
-                      <button className="w-full py-3.5 cursor-pointer font-medium bg-indigo-500 text-white hover:bg-indigo-600 transition">
+                      <button onClick={handleBuyNow} className="w-full py-3.5 cursor-pointer font-medium bg-indigo-500 text-white hover:bg-indigo-600 transition">
                         Buy now
                       </button>
                     </div>

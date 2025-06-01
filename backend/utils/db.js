@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
 
+dotenv.config();
 //MongoDB connection
-const connectDb = mongoose.connect("mongodb+srv://tarkeshwarraj:U8jOyDhyUNZ04Zft@cluster0.9apdlwv.mongodb.net/p2p?retryWrites=true&w=majority&appName=Cluster0", {
+const connectDb = mongoose.connect(process.env.MONGO_DB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(()=> console.log("MongoDB connected"))
 .catch(error => console.error("MongoDB error: ", error));
 
-
+ 
 export default connectDb;
