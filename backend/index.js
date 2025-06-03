@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from './routes/auth.js'
 import productRoutes from './routes/productRoutes.js';
+import paymentRoutes from "./routes/paymentRoutes.js"
 import connectDb from "./utils/db.js";
 import cookieParser from "cookie-parser";
 
@@ -28,7 +29,8 @@ app.get("/api", (req, res) =>{
 });
 
 app.use('/api/auth', authRoutes);
-app.use('/api/product', productRoutes)
+app.use('/api/product', productRoutes);
+app.use('/api/payments', paymentRoutes );
 
 
 //MongoDB connect

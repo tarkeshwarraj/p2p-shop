@@ -6,7 +6,7 @@ import { image } from "@/lib/assets";
 import Link from 'next/link';
 
 const OrderConfirmationPage = () => {
-  const { selectedProductId, fetchProductById } = useAppContext();
+  const { selectedProductId, fetchProductById, axios } = useAppContext();
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
@@ -14,11 +14,36 @@ const OrderConfirmationPage = () => {
       if (selectedProductId) {
         const data = await fetchProductById(selectedProductId);
         setProduct(data.product);
-        console.log(data);
       }
     };
     getProduct();
   }, [selectedProductId]);
+
+  const handlePlaceOrder = async () => {
+  try {
+    const res = await axios.post("/api/payments/create-order", {
+  price_amount: 100,
+  price_currency: "USD",
+  pay_currency: "currency",
+  order_id: "Order123",
+  order_description: "Order for T-shirt"
+});
+
+    const data = res.data;
+
+    console.log(data);
+
+    if (data.success) {
+      window.location.href = data.invoice_url;
+    } else {
+      alert("Invoice creation failed!");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Error placing order.");
+  }
+};
+
 
   if (!product) return <div>Loading...</div>;
 
@@ -73,7 +98,6 @@ const OrderConfirmationPage = () => {
 
           <p className="text-sm font-medium uppercase mt-6">Payment Method</p>
           <select className="w-full border border-gray-300 bg-white px-3 py-2 mt-2 outline-none">
-            <option value="COD">Cash On Delivery</option>
             <option value="Online">Online Payment</option>
           </select>
         </div>
@@ -92,7 +116,7 @@ const OrderConfirmationPage = () => {
           </p>
         </div>
 
-        <button className="w-full py-3 mt-6 cursor-pointer bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition">
+        <button onClick={handlePlaceOrder} className="w-full py-3 mt-6 cursor-pointer bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition">
           Place Order
         </button>
       </div>
