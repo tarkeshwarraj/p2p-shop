@@ -1,5 +1,6 @@
 //controllers/paymentController.js
 import axios from "axios";
+import Order from "../models/Order.js";
 
 
 //Dummy database( you can replace with real DB like MongoDB/MySQL)
@@ -22,9 +23,9 @@ try{
       price_currency,
       order_id,
       order_description,
-      ipn_callback_url: process.env.WEBHOOK_URL || "https://nowpayments.io",
-      success_url: "https://yourfrontend.com/success",
-      cancel_url: "https://yourfrontend.com/cancel"
+      ipn_callback_url: "https://d3a4-2401-4900-1c4b-1234.ngrok.io/api/payments/webhook",
+      success_url: "http://localhost:3000/order/success",
+      cancel_url: "http://localhost:3000/order/failed"
     };
 
     const response = await axios.post("https://api.nowpayments.io/v1/invoice",payload, {headers: {
@@ -36,7 +37,8 @@ try{
     const invoice = response.data;
 
     //Optional: Save to DB here
-    console.log(invoice);
+    console.log(response, {mydata: "this is response data"});
+    console.log(invoice, {mydata: "this is invoice data"});
 
     res.status(200).json({
         success: true,
@@ -54,19 +56,37 @@ try{
 };
 
 
-export const handleWebhook = (req, res) =>{
-    const data = req.body;
 
-    console.log("Webhook received:", data);
+export const handleWebhook = async (req, res) => {
+  const data = req.body;
 
-    const {payment_status, order_id} = data;
+  console.log(data, {mydata: "this is webhook data"});
+  try {
 
-    //Update order status
-    const order = orders.find(o => o.orderId === order_id);
-    if(order){
-        order.status = payment_status;
-        console.log(`Order ${order_id} update to ${payment_status}`);
+    if (data.payment_status === "finished" || data.payment_status === "confirmed") {
+      // Check if order already exists (idempotency)
+      const existingOrder = await Order.findOne({ paymentId: data.payment_id });
+      if (existingOrder) {
+        return res.status(200).send("Order already saved");
+      }
+
+      // Save order in DB
+      await Order.create({
+        productId : data.productId,
+        orderId: data.order_id,
+        paymentId: data.payment_id,
+        status: data.payment_status,
+        amount: data.price_amount,
+        currency: data.price_currency,
+        payCurrency: data.pay_currency, // match schema field name
+        userId: data.userId,
+        createdAt: new Date() // assuming your schema uses createdAt
+      });
     }
+  } catch (error) {
+    console.error("Webhook error:", error);
+    return res.status(500).send("Error handling webhook");
+  }
 
-    res.status(200).send("Webhook received");
-}
+  res.status(200).send("Webhook received");
+};

@@ -22,7 +22,7 @@ const OrderConfirmationPage = () => {
   const handlePlaceOrder = async () => {
   try {
     const res = await axios.post("/api/payments/create-order", {
-  price_amount: 100,
+  price_amount: .7,
   price_currency: "USD",
   pay_currency: "currency",
   order_id: "Order123",
@@ -31,7 +31,7 @@ const OrderConfirmationPage = () => {
 
     const data = res.data;
 
-    console.log(data);
+    console.log(data, {mydata: "this is frontend data"});
 
     if (data.success) {
       window.location.href = data.invoice_url;
