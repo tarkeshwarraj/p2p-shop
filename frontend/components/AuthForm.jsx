@@ -26,7 +26,7 @@ export default function AuthForm() {
     
     if (isLogin) {
       // TODO: call login API
-      const res = await axios.post("/api/auth/login", {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, {
         email: form.email,
         password: form.password,
       });
@@ -34,7 +34,7 @@ export default function AuthForm() {
       console.log(res.data);
     } else {
       // TODO: call signup API
-      const res = await axios.post("/api/auth/signup", {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`, {
         name: form.name,
         email: form.email,
         password: form.password,

@@ -17,16 +17,19 @@ const OrderConfirmationPage = () => {
       }
     };
     getProduct();
+    
   }, [selectedProductId]);
 
   const handlePlaceOrder = async () => {
   try {
     const res = await axios.post("/api/payments/create-order", {
-  price_amount: .7,
+  price_amount: product.price,
   price_currency: "USD",
   pay_currency: "currency",
-  order_id: "Order123",
-  order_description: "Order for T-shirt"
+  order_id: product.productId,
+  order_description: product.description,
+  productId: product._id,
+  userId: User._id
 });
 
     const data = res.data;
@@ -43,8 +46,7 @@ const OrderConfirmationPage = () => {
     alert("Error placing order.");
   }
 };
-
-
+  console.log(product);
   if (!product) return <div>Loading...</div>;
 
   return (

@@ -3,11 +3,9 @@ import axios from "axios";
 import Order from "../models/Order.js";
 
 
-//Dummy database( you can replace with real DB like MongoDB/MySQL)
-const orders =[];
-
+//Create order Controller function
 export const createOrder = async (req, res) =>{
-    const { price_amount, price_currency, pay_currency, order_id, order_description } = req.body;
+    const { price_amount, price_currency, pay_currency, order_id, order_description, productId, userId} = req.body;
 
 if (!price_amount || !price_currency || !pay_currency || !order_id || !order_description) {
     return res.status(400).json({
@@ -36,9 +34,27 @@ try{
 
     const invoice = response.data;
 
-    //Optional: Save to DB here
-    console.log(response, {mydata: "this is response data"});
-    console.log(invoice, {mydata: "this is invoice data"});
+    //Save to DB immediately
+    if(data.payment_status === "finished" || data.payment_status === "confirmed"){
+      //1. Check if the order already exists by payment ID
+      const existingOrder = await Order.findOne({paymentId: data.payment_id });
+      if(existingOrder){
+        return res.status(200).send("Order already saved");
+      }
+
+      //2.Save the order in the DB
+      await Order.create({
+        productId: data.productId,
+        orderId: data.order_id,
+        paymentId: data.payment_id,
+        status: data.payment_status,
+        amount: data.price_amount,
+        currency: data.price_currency,
+        payCurrency: data.pay_currency,
+        userId: data.userId,
+        createdAt: new Date()
+      });
+    }
 
     res.status(200).json({
         success: true,
@@ -56,7 +72,7 @@ try{
 };
 
 
-
+// WebHook Controller Function is Here
 export const handleWebhook = async (req, res) => {
   const data = req.body;
 

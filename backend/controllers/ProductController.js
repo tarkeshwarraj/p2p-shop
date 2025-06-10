@@ -1,24 +1,39 @@
 import Product from "../models/Product.js";
 
 //Create new product
-export const createProduct = async(req, res) =>{
-    const {name, description, category, price, role, images} = req.body;
+export const addProduct = async(req, res) =>{
+    const {name, description, category, price, role, userId } = req.body;
     try{
+
+      console.log("Files:", req.files);
+      console.log("Body:", req.body);
+
+        const imageUrls = req.files.map((file) => file.path); // or file.secure_url //Get Cloudinary images URLs
+
         const newProduct = new Product({
             name,
             description,
             category,
             price,
             role,
-            images,
+            images: imageUrls, //Correct way
             userId: req.user.userId,
         });
+
+        console.log(newProduct);
 
         const savedProduct = await newProduct.save();
         res.status(201).json(savedProduct);
 
     }catch(error){
-        res.status(500).json({message: "Failed to add product", error});
+      console.error("Add Product Error:", error);
+      
+      // Send a JSON response with error info
+    res.status(500).json({
+    message: "Failed to add product",
+    error: error.message || error.toString(),
+    stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+  });
     }
 }
 

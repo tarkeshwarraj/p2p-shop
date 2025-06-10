@@ -3,21 +3,63 @@
 import { useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
+import axios from 'axios';
 
 const AddProduct = () => {
+  const router = useRouter();
   const [images, setImages] = useState([null, null]);
-  const router = useRouter(); // ✅ Move this outside of any function
+  const [productName, setProductName] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [price, setPrice] = useState('');
+  const [role, setRole] = useState('');
+  const [files, setFiles] = useState([null, null]); // for actual File upload
+
   
   //Forum handle change
   const handleImageChange = (e, index) => {
     const file = e.target.files[0];
     if (file) {
+      const newFiles = [...files];
       const newImages = [...images];
       newImages[index] = URL.createObjectURL(file);
+      newFiles[index] = file;
       setImages(newImages);
+      setFiles(newFiles);
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('name', productName);
+    formData.append('description', description);
+    formData.append('category', category);
+    formData.append('price', price);
+    formData.append('role', role);
+
+    // append multiple images
+images.forEach((imageFile) => {
+  console.log(imageFile);
+  formData.append('images', files); // "images" matches the field name multer expects
+});
+
+    try{
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/product/add`, formData,{
+        withCredentials: true, //Required to send cookies
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Product Added:', res.data);
+
+    }catch(err){
+      console.error("Error adding product:", err.response?.data || err.message || err);
+      alert("Failed to add product")
+    }
+  };
+  
   
     // useEffect(()=>{
     //   if(!user){
@@ -48,7 +90,7 @@ const AddProduct = () => {
         </p>
       </div>
 
-      <form className="space-y-6">
+      <form className="space-y-6" onSubmit={handleSubmit}>
         {/* Product Images */}
         <div>
           <p className="text-base font-medium">Product Image</p>
@@ -85,6 +127,8 @@ const AddProduct = () => {
             id="product-name"
             type="text"
             placeholder="Type here"
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
             className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
             required
           />
@@ -100,6 +144,8 @@ const AddProduct = () => {
             rows={4}
             className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40 resize-none"
             placeholder="Type here"
+            value={description}
+            onChange={(e)=> setDescription(e.target.value)}
           ></textarea>
         </div>
 
@@ -110,6 +156,8 @@ const AddProduct = () => {
           </label>
           <select
             id="category"
+            value={category}
+            onChange={(e)=> setCategory(e.target.value)}
             className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
           >
             <option value="">Select Category</option>
@@ -130,6 +178,8 @@ const AddProduct = () => {
             <input
               id="product-price"
               type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
               placeholder="0"
               className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
               required
@@ -143,6 +193,8 @@ const AddProduct = () => {
           </label>
           <select
             id="my-role"
+            value={role}
+            onChange={(e)=>{setRole(e.target.value)}}
             className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
           >
             <option value="">Select Role</option>

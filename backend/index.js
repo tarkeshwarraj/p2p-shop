@@ -14,13 +14,21 @@ const app = express();
 
 //Middleware
 app.use(cors({
-    origin: "https://p2p-shop.vercel.app",
+    origin: "http://localhost:3000",
     credentials: true
 }));
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true}));
 app.use(cookieParser());
+
+app.use((err, req, res, next) => {
+  console.error("Unhandled error:", err);
+  res.status(500).json({
+    message: "Internal Server Error",
+    error: err.message || err.toString(),
+  });
+});
 
 
 //Routes

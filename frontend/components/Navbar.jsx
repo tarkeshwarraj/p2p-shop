@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAppContext } from "@/context/AppContext";
+import axios from 'axios';
 
 const Navbar = () => {
   const router = useRouter();
@@ -12,10 +13,15 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef();
 
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-    router.push("/login"); //optional: redirect to login page
+  const handleLogout = async () => {
+    try{
+      await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/logout`, {withCredentials: true });
+      setUser(null);
+      localStorage.removeItem("user");
+      router.push("/login");
+    }catch(err){
+      console.error("Logout failed", err)
+    }
   };
 
   //Close dropdown when clicked outside

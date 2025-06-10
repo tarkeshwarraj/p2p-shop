@@ -1,15 +1,16 @@
 import express from 'express';
 import {
-  createProduct,
+  addProduct,
   getAllProducts,
   getProductByProductId
 } from '../controllers/ProductController.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
+import {upload} from '../utils/cloudinary.js'
 
 const router = express.Router();
 
 // Route to create a new product
-router.post('/add', authMiddleware, createProduct);
+router.post('/add', authMiddleware, upload.array('images', 5), addProduct);
 
 // Route to get all products
 router.get('/all', getAllProducts);

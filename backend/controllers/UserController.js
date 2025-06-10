@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+//Signup Controller
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
@@ -24,6 +25,7 @@ export const signup = async (req, res) => {
   }
 };
 
+//Login controller 
 export const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -83,8 +85,7 @@ export const isAuth = async (req, res) => {
   }
 };
 
-//Logout User : /api/user/logout
-
+//Logout User : /api/auth/logout
 export const logout = async (req, res) => {
   try {
     res.clearCookie("token", {
