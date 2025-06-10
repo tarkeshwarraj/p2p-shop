@@ -40,9 +40,9 @@ const AddProduct = () => {
     formData.append('role', role);
 
     // append multiple images
-images.forEach((imageFile) => {
-  console.log(imageFile);
-  formData.append('images', files); // "images" matches the field name multer expects
+files.forEach((file) => {
+  // console.log(file);
+  formData.append('images', file); // "images" matches the field name multer expects
 });
 
     try{

@@ -5,12 +5,12 @@ import {
   getProductByProductId
 } from '../controllers/ProductController.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
-import {upload} from '../utils/cloudinary.js'
+import upload from '../utils/multer.js'
 
 const router = express.Router();
 
 // Route to create a new product
-router.post('/add', authMiddleware, upload.array('images', 5), addProduct);
+router.post('/add', authMiddleware, upload.array('images'), addProduct);
 
 // Route to get all products
 router.get('/all', getAllProducts);

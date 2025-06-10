@@ -1,6 +1,8 @@
 //controllers/paymentController.js
 import axios from "axios";
 import Order from "../models/Order.js";
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 //Create order Controller function
@@ -32,7 +34,8 @@ try{
       }
     });
 
-    const invoice = response.data;
+    const data = response.data;
+    console.log(data);
 
     //Save to DB immediately
     if(data.payment_status === "finished" || data.payment_status === "confirmed"){
@@ -44,22 +47,22 @@ try{
 
       //2.Save the order in the DB
       await Order.create({
-        productId: data.productId,
+        productId: productId,
         orderId: data.order_id,
         paymentId: data.payment_id,
         status: data.payment_status,
         amount: data.price_amount,
         currency: data.price_currency,
         payCurrency: data.pay_currency,
-        userId: data.userId,
+        userId: userId,
         createdAt: new Date()
       });
     }
 
     res.status(200).json({
         success: true,
-        invoice_url: invoice.invoice_url,
-        invoice_id: invoice.id
+        invoice_url: data.invoice_url,
+        invoice_id: data.id
     });
 }catch(err){
     console.log("Error creating invoice:", err?.response?.data || err.message);

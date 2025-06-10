@@ -6,7 +6,7 @@ import { image } from "@/lib/assets";
 import Link from 'next/link';
 
 const OrderConfirmationPage = () => {
-  const { selectedProductId, fetchProductById, axios } = useAppContext();
+  const { selectedProductId, fetchProductById, axios, user } = useAppContext();
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const OrderConfirmationPage = () => {
   order_id: product.productId,
   order_description: product.description,
   productId: product._id,
-  userId: User._id
+  userId: user._id
 });
 
     const data = res.data;
