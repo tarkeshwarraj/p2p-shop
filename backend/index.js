@@ -37,7 +37,7 @@ app.get("/api", (req, res) =>{
 });
 
 app.use('/api/auth', authRoutes);
-app.use('/api/product', productRoutes);
+app.use('/api/products', productRoutes);  //http://localhost:5000/api/products/all
 app.use('/api/payments', paymentRoutes );
 
 

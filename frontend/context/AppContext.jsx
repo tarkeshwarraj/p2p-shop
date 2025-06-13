@@ -18,7 +18,7 @@ export const AppContextProvider = ({children}) => {
     const [product, setProduct] = useState([]);
 
     //Fetch User Auth Status
-    const fetchUser = async() => {
+    const fetchUser = async(req, res) => {
         try{
             const {data} = await axios.get('/api/auth/is-auth');
             console.log(data);
@@ -28,14 +28,14 @@ export const AppContextProvider = ({children}) => {
             }
         }catch(error){
             setUser(null);
-            localStorage.removeItem('user'); //Clear on error
+             localStorage.removeItem('user'); //Clear on error
         }
     }
 
     //Get All Products
-    const fetchAllProduct = async () => {
+    const fetchAllProduct = async (req, res) => {
         try {
-        const res = await axios.get("/api/product/all");
+        const res = await axios.get("http://localhost:5000/api/products/all");
         setProduct(res.data);
         console.log(product);
         } catch (err) {

@@ -1,9 +1,19 @@
 'use client'
-import React from 'react';
-import All from '../dashboard/All';
+import React,{useState} from 'react';
+import ProductCard from '@/components/ProductCard';
+import ProductList from '@/components/ProsuctList';
 
-const Page = () => {
-  const tabs = ['All', 'sell', 'buy', 'order'];
+const Page = () => {  
+  const [filters, setFilters] = useState({
+    name: '',
+    category: '',
+    productId: ''
+  });
+
+  const handleSearch = () =>{
+    //just triggers useEffect in ProductList via prop update
+    setFilters({ ...filters });
+  }
 
   return (
     <div>
@@ -19,9 +29,10 @@ const Page = () => {
             <input
               type="text"
               id="product"
-              name="product"
               placeholder="Enter product name"
               className="border border-gray-300 px-4 py-2.5 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={filters.name}
+              onChange={(e) => setFilters({...filters, name: e.target.value})}
             />
           </div>
 
@@ -32,6 +43,8 @@ const Page = () => {
             </label>
             <select
               id="category"
+              value={filters.category}
+              onChange={(e) => setFilters({ ...filters, category: e.target.value})}
               name="category"
               className="border border-gray-300 px-4 py-2.5 rounded-md text-base bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
@@ -69,6 +82,8 @@ const Page = () => {
               <input
                 type="text"
                 placeholder="Search by Product ID"
+                value={filters.productId}
+                onChange={(e) => setFilters({ ...filters, productId: e.target.value})}
                 className="w-full px-3 py-2.5 text-base text-gray-700 focus:outline-none"
               />
             </div>
@@ -77,7 +92,7 @@ const Page = () => {
 
         {/* Right CTA Button */}
         <div className="w-full sm:w-auto">
-          <button className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-3 rounded-md text-base font-semibold transition-all shadow-lg w-full sm:w-auto mt-4 sm:mt-0">
+          <button onClick={handleSearch} className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-3 rounded-md text-base font-semibold transition-all shadow-lg w-full sm:w-auto mt-4 sm:mt-0">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -98,8 +113,9 @@ const Page = () => {
       </div>
 
       {/* Product List Section */}
-      <div className="p-6">
-        <All />
+      <div className="p-6 flex justify-center">
+        <ProductList filters={filters}/>
+        
       </div>
     </div>
   );

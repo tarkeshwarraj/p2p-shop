@@ -1,5 +1,7 @@
 import Product from "../models/Product.js";
+import Order from "../models/Order.js";
 import cloudinary from '../utils/cloudinary.js'
+import mongoose from 'mongoose';
 
 const uploadToCloudinary = (fileBuffer) => {
   return new Promise((resolve, reject) => {
@@ -52,8 +54,15 @@ export const addProduct = async (req, res) => {
 
 // Get all products
 export const getAllProducts = async (req, res) => {
+  const {name, category, productId } = req.query;
+  const query = {};
+
+  if(name) query.name = new RegExp(name, 'i');
+  if(category) query.category = category;
+  if(productId) query.productId = productId;
+
   try {
-    const products = await Product.find().populate("userId", "name rating");
+    const products = await Product.find(query).populate('userId');
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching products', error });
@@ -61,7 +70,7 @@ export const getAllProducts = async (req, res) => {
 };
 
 
-
+//Get all product By Id
 export const getProductByProductId = async (req, res) => {
   const { id } = req.params;
 
@@ -97,3 +106,37 @@ export const getProductByProductId = async (req, res) => {
 //         res.status(500).json({message: "Error fetching product", error});
 //     }
 // };
+
+
+//Get Product By User
+export const getProductByUser = async(req, res) => {
+  try{
+    const userId = req.user.userId;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ error: "Invalid user ID" });
+  }
+
+    const products = await Product.find({ userId });
+    console.log(products)
+    res.json(products);
+  }catch(err){
+    res.status(500).json({message: "Server error"});
+  }
+};
+
+
+//Get Purchased Order By Buyer
+export const getPurchasedProducts = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    console.log(userId)
+
+    const products = await Order.find({ buyerId: userId }).populate("productId").sort({createdAt: -1});
+
+    res.json(products);
+  } catch (err) {
+    console.error('Error fetching buyed products:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

@@ -9,7 +9,7 @@ const OrderSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
   currency: { type: String, default: 'USD' },
   payCurrency: { type: String }, // e.g., 'btc', 'eth'
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // optional if users exist
+  buyerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // optional if users exist
   createdAt: { type: Date, default: Date.now }
 });
 

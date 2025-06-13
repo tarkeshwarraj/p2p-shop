@@ -25,7 +25,6 @@ const productSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-
 // Generate unique 6-digit product ID before saving
 productSchema.pre("validate", async function (next) {
   if (!this.productId) {

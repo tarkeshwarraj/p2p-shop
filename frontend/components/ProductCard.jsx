@@ -9,8 +9,6 @@ const ProductCard = ({ product }) => {
 
   return (
     <div>
-
-  
     <Link href={`/products/${product._id}`} passHref className="space-y-4">
     <div
       key={product._id}
