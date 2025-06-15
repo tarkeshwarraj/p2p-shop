@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import Image from 'next/image';
 
 // components/Footer.jsx
 export default function Footer() {
@@ -9,9 +9,7 @@ export default function Footer() {
         <div className="md:max-w-96">
             <Image className="h-9 w-auto" src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/dummyLogo/dummyLogoDark.svg" alt="dummyLogoDark" width={150} height={36} />
             <p className="mt-6 text-sm">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                A secure peer-to-peer platform where users can safely buy and sell products, with built-in protections to prevent scams, verify transactions, and build trust between buyers and sellers. Our system ensures every deal is transparent, smooth, and secure—making online trading simple and reliable for everyone.
             </p>
         </div>
         <div className="flex-1 flex items-start md:justify-end gap-20">
@@ -30,7 +28,12 @@ export default function Footer() {
                     <p>+1-212-456-7890</p>
                     <p>contact@example.com</p>
                 </div>
+           
+            <div>
+                <p className="my-2">Powered By</p>
+                <Image src="/nowpayments-white.png" width={70} height={70} alt={"Picture of the author"} />
             </div>
+             </div>
         </div>
     </div>
     <p className="pt-4 text-center text-xs md:text-sm pb-5">

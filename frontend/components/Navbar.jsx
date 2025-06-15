@@ -51,16 +51,17 @@ const Navbar = () => {
       {/* Desktop Menu */}
       <ul className="md:flex hidden items-center gap-8">
         <li>
+          <Link className="hover:text-gray-500/80 transition" href="/">
+            Home
+          </Link>
+        </li>
+        <li>
           <Link className="hover:text-gray-500/80 transition" href="/products">
             Products
           </Link>
         </li>
         {!user ? (
-          <li>
-            <Link className="hover:text-gray-500/80 transition" href="/">
-              Home
-            </Link>
-          </li>
+          <></>
         ) : (
           
           <li>
@@ -76,8 +77,8 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link className="hover:text-gray-500/80 transition" href="/pricing">
-            Pricing
+          <Link className="hover:text-gray-500/80 transition" href="/contact-us">
+            Contact us
           </Link>
         </li>
       </ul>

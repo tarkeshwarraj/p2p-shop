@@ -15,8 +15,6 @@ export default function DashboardPage() {
         return <SellProduct/>
       case 'buy':
         return <BuyProduct/>
-      case 'order':
-        return <OrderHistory/>
       case 'all':
         default:
           return <All/>;

@@ -21,6 +21,12 @@ const OrderConfirmationPage = () => {
   }, [selectedProductId]);
 
   const handlePlaceOrder = async () => {
+    // 🚨 Check if user is logged in
+  if (!user || !user._id) {
+    window.location.href = "/login"; // Redirect to login page
+    return;
+  }
+    
   try {
     const res = await axios.post("/api/payments/create-order", {
   price_amount: product.price,

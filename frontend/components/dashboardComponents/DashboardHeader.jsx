@@ -4,7 +4,7 @@ import {useState} from 'react';
 import Link from 'next/link';
 
 export default function DashboardHeader({activeTab, setActiveTab}) {
-  const tabs = ["All", "sell", "buy", "order"];
+  const tabs = ["All", "sell", "buy"];
 
   return (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 p-6 bg-white shadow-lg rounded-xl border border-gray-200">

@@ -62,7 +62,7 @@ export default function EditProductPage() {
 
     try {
       setUploading(true);
-      const res = await axios.post("https://api.cloudinary.com/v1_1/p2p/image/upload", data);
+      const res = await axios.post("https://api.cloudinary.com/v1_1/dbxllb1zl/image/upload", data);
       setForm({ ...form, images: [...form.images, res.data.secure_url] });
       setNewImageFile(null);
     } catch (error) {
@@ -77,7 +77,7 @@ export default function EditProductPage() {
     try {
       await axios.put(`/api/products/${id}`, form);
       alert("Product updated!");
-      router.push("/dashboard/sellProduct");
+      router.push("/dashboard");
     } catch (error) {
       console.error("Update failed", error);
     }

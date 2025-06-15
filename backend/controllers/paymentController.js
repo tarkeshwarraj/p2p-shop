@@ -48,7 +48,7 @@ try{
       //2.Save the order in the DB
       await Order.create({
         productId: productId,
-        orderId: data.order_id,
+        orderId: data.order_id, 
         paymentId: data.payment_id,
         status: data.payment_status,
         amount: data.price_amount,
