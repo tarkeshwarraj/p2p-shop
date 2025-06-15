@@ -15,14 +15,14 @@ export default function HowItWorks() {
       {/* Embedded Short Video */}
       <div className="max-w-3xl mx-auto ">
         <div className="aspect-video mb-6 rounded-xl overflow-hidden shadow-lg">
-          <iframe
+          {/* <iframe
             className="w-full h-full"
             src="https://www.youtube.com/embed/dQw4w9WgXcQ" // Replace with your video URL
             title="How It Works Video"
             frameBorder="0"
             allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
             allowFullScreen
-          ></iframe>
+          ></iframe> */}
         </div>
       </div>
 
