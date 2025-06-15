@@ -46,7 +46,7 @@ export const AppContextProvider = ({children}) => {
     //Get Product by Id
     const fetchProductById = useCallback (async(id) => {
         try{
-            const res = await axios.get(`/api/product/${id}`);
+            const res = await axios.get(`/api/products/${id}`);
             return res.data; //return data
         }catch(error){
             console.error('Error fetching product:', error);

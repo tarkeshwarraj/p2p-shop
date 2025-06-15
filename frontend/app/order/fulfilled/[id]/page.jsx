@@ -6,8 +6,9 @@ import { useAppContext } from "@/context/AppContext";
 import { assets, image } from "@/lib/assets";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import OrderProgress from "@/components/OrderProgress";
 
-const ProductDetailsPage = ({ params }) => {
+const FulfilledPage = ({ params }) => {
 
   const { axios, fetchProductById, setSelectedProductId, selectedProductId  } = useAppContext();
   const [singleProduct, setSingleProduct] = useState(null);
@@ -54,8 +55,11 @@ const ProductDetailsPage = ({ params }) => {
   };
 
   return (
+    <div>
+        <OrderProgress status='Product Delivered'/>
+        
     <div className="p-4 bg-gray-50">
-      <div className="flex flex-col md:flex-row gap-4 ">
+      <div className="flex flex-col md:flex-row gap-4">
         {/* Product Details Section */}
         <div className="w-full md:w-2/3 h-full overflow-hidden">
           {/* Mobile toggle */}
@@ -63,21 +67,21 @@ const ProductDetailsPage = ({ params }) => {
             <h2 className="text-lg font-semibold">Product Details</h2>
             <button onClick={() => setShowDetails(!showDetails)}>
               {showDetails ? (
-                <ChevronUp size={20} />
-              ) : (
-                <ChevronDown size={20} />
-              )}
+                  <ChevronUp size={20} />
+                ) : (
+                    <ChevronDown size={20} />
+                )}
             </button>
           </div>
 
           {/* Product Card */}
           <div
             className={`${
-              showDetails ? "block" : "hidden"
-            } md:block bg-white h-[calc(80vh-160px)] p-6 rounded-md shadow-md  overflow-y-auto`}
-          >
+                showDetails ? "block" : "hidden"
+            } md:block bg-white p-6 rounded-md shadow-md h-[calc(80vh-160px)] overflow-y-auto`}
+            >
             {singleProduct ? (
-              <div className="max-w-6xl w-full px-6 mx-auto">
+                <div className="max-w-6xl w-full px-6 mx-auto">
                 <p>
                   <span>Home</span> /<span> Products</span> /
                   <span> {singleProduct.category}</span> /
@@ -90,18 +94,18 @@ const ProductDetailsPage = ({ params }) => {
                       {(singleProduct.images.length > 0
                         ? singleProduct.images
                         : image
-                      ) // default image from assets
-                        .map((img, index) => (
-                          <div
-                            key={index}
-                            onClick={() => setThumbnail(img)}
-                            className="border max-w-24 border-gray-500/30 rounded overflow-hidden cursor-pointer"
-                          >
+                    ) // default image from assets
+                    .map((img, index) => (
+                        <div
+                        key={index}
+                        onClick={() => setThumbnail(img)}
+                        className="border max-w-24 border-gray-500/30 rounded overflow-hidden cursor-pointer"
+                        >
                             <img
                               src={img}
                               alt={`Product ${index}`}
                               className="w-full h-auto"
-                            />
+                              />
                           </div>
                         ))}
                     </div>
@@ -112,8 +116,8 @@ const ProductDetailsPage = ({ params }) => {
                                 className="h-9 w-auto"
                                 src={thumbnail}
                                 alt="Logo"
-                               width={1500} height={1500} 
-                              /> */}
+                                width={1500} height={1500} 
+                                /> */}
                     </div>
                   </div>
 
@@ -126,20 +130,20 @@ const ProductDetailsPage = ({ params }) => {
                       {Array(5)
                         .fill("")
                         .map((_, i) =>
-                          singleProduct.userId.rating > i ? (
-                            <svg
-                              key={i}
-                              width="20"
-                              height="20"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              className="text-yellow-400 drop-shadow-md"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
+                            singleProduct.userId.rating > i ? (
+                                <svg
+                                key={i}
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                                className="text-yellow-400 drop-shadow-md"
+                                xmlns="http://www.w3.org/2000/svg"
+                                >
                               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.294 3.983a1 1 0 0 0 .951.69h4.188c.969 0 1.371 1.24.588 1.81l-3.388 2.46a1 1 0 0 0-.364 1.118l1.295 3.983c.299.921-.756 1.688-1.54 1.118L10.589 15.63a1 1 0 0 0-1.176 0l-3.389 2.46c-.783.57-1.838-.197-1.539-1.118L5.78 12.99a1 1 0 0 0-.363-1.118L2.028 9.41c-.783-.57-.38-1.81.588-1.81h4.188a1 1 0 0 0 .95-.69L9.049 2.927z" />
                             </svg>
                           ) : (
-                            <svg
+                              <svg
                               key={i}
                               width="20"
                               height="20"
@@ -147,7 +151,7 @@ const ProductDetailsPage = ({ params }) => {
                               fill="currentColor"
                               className="text-gray-300"
                               xmlns="http://www.w3.org/2000/svg"
-                            >
+                              >
                               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.294 3.983a1 1 0 0 0 .951.69h4.188c.969 0 1.371 1.24.588 1.81l-3.388 2.46a1 1 0 0 0-.364 1.118l1.295 3.983c.299.921-.756 1.688-1.54 1.118L10.589 15.63a1 1 0 0 0-1.176 0l-3.389 2.46c-.783.57-1.838-.197-1.539-1.118L5.78 12.99a1 1 0 0 0-.363-1.118L2.028 9.41c-.783-.57-.38-1.81.588-1.81h4.188a1 1 0 0 0 .95-.69L9.049 2.927z" />
                             </svg>
                           )
@@ -177,7 +181,7 @@ const ProductDetailsPage = ({ params }) => {
                 </div>
               </div>
             ) : (
-              <p>Loading product details...</p>
+                <p>Loading product details...</p>
             )}
           </div>
         </div>
@@ -191,12 +195,12 @@ const ProductDetailsPage = ({ params }) => {
           </div>
           <div className="flex-1 overflow-y-auto p-4 space-y-2 text-sm">
             {chat.map((msg, idx) => (
-              <p
+                <p
                 key={idx}
                 className={`${
-                  msg.from === "user" ? "text-gray-700" : "text-blue-600"
+                    msg.from === "user" ? "text-gray-700" : "text-blue-600"
                 }`}
-              >
+                >
                 {msg.from === "user" ? "You" : "Seller"}: {msg.text}
               </p>
             ))}
@@ -209,18 +213,19 @@ const ProductDetailsPage = ({ params }) => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            />
+              />
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded"
               onClick={handleSend}
-            >
-              <Send size={18} />
+              >
+              {/* <Send size={18} /> */}
             </button>
           </div>
         </div>
       </div>
+                </div>
     </div>
   );
 };
 
-export default ProductDetailsPage;
+export default FulfilledPage;

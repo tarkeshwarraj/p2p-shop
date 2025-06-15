@@ -22,6 +22,7 @@ const productSchema = new mongoose.Schema({
     ref: "User", //Assuming you have a User model
     required: true,
   },
+  status: { type: String, enum: ['available', 'sold', 'archived'], default: 'available' },
   createdAt: { type: Date, default: Date.now },
 });
 

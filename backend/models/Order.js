@@ -10,6 +10,11 @@ const OrderSchema = new mongoose.Schema({
   currency: { type: String, default: 'USD' },
   payCurrency: { type: String }, // e.g., 'btc', 'eth'
   buyerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // optional if users exist
+  status: { 
+    type: String, 
+    enum: ['pending', 'confirmed', 'finished', 'failed'], 
+    default: 'pending' 
+  },
   createdAt: { type: Date, default: Date.now }
 });
 

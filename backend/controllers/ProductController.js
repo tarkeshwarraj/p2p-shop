@@ -88,26 +88,6 @@ export const getProductByProductId = async (req, res) => {
   }
 };
 
-
-
-//Get product By Product Id
-// export const getProductByProductId = async( req, res) =>{
-//     const {productId } = req.params;
-
-//     try{
-//         const product = await Product.findOne({productId}).populate("userId", "name rating");
-        
-//         if(!product){
-//             return res.status(404).json({message: "product not found"});
-//         }
-
-//         res.status(200).json(product);
-//     }catch (error){
-//         res.status(500).json({message: "Error fetching product", error});
-//     }
-// };
-
-
 //Get Product By User
 export const getProductByUser = async(req, res) => {
   try{
@@ -130,13 +110,92 @@ export const getProductByUser = async(req, res) => {
 export const getPurchasedProducts = async (req, res) => {
   try {
     const userId = req.user.userId;
-    console.log(userId)
+    console.log(req.user)
 
-    const products = await Order.find({ buyerId: userId }).populate("productId").sort({createdAt: -1});
+    const products = await Order.find({ buyerId: req.user.userId }).populate('productId');  //Poluted karna sa product collection sa ja kar uska bhi data la aata hai
 
     res.json(products);
   } catch (err) {
     console.error('Error fetching buyed products:', err);
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+export const getSellingProducts = async (req, res) =>{
+  try{
+    const userId = req.user.userId;
+
+    const products = await Product.find({
+      userId,
+      status: 'available'
+    });
+
+    res.json(products);
+  }catch(err){
+    console.error("Error fetching selling products:", err);
+    res.status(500).json({message: 'Server error'});
+  }
+}
+
+//Update Product
+export const updateProduct = async (req, res) =>{
+  const {id} = req.params;
+  console.log(id);
+
+  try{
+    const updatedProduct  = await Product.findByIdAndUpdate(id, req.body, {new: true, runValidators: true});
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    
+    res.json(updatedProduct);
+  }catch(err){
+    console.error('Update failed:', err.message);
+    res.status(500).json({ message: 'Update failed', error: err.message });
+  }
+}
+
+
+//Edit conditions
+const steps = [
+  'Order Placed',
+  'Payment Completed',
+  'Product Delivered',
+  'Product Testing',
+  'Payment Released',
+  'sold'
+];
+
+//Delete Product
+export const deleteProduct = async(req, res) => {
+  const {id} = req.params;
+
+  try{
+    const product = await Product.findById(id);
+
+     if (!product) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+
+    // Prevent deletion if status is in the steps list
+    if (steps.includes(product.status)) {
+      return res.status(400).json({
+        success: false,
+        message: `Cannot delete product. Status is '${product.status}'`,
+      });
+    }
+
+    await Product.findByIdAndDelete(id);
+
+    res.status(200).json({ success: true, message: 'Product deleted successfully' });
+
+  }catch(err){
+    console.error("Delete Product error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server error while deleting product",
+    });
   }
 };

@@ -4,7 +4,10 @@ import {
   getAllProducts,
   getProductByProductId,
   getProductByUser,
-  getPurchasedProducts
+  getPurchasedProducts,
+  getSellingProducts,
+  deleteProduct,
+  updateProduct
 } from '../controllers/ProductController.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import upload from '../utils/multer.js'
@@ -24,14 +27,16 @@ router.get('/user', authMiddleware, getProductByUser);
 router.get('/purchased', authMiddleware, getPurchasedProducts);
 
 //Route to get product Selling by user
-// router.get('/selling', authMiddleware, getSellingProducts);
+router.get('/selling', authMiddleware, getSellingProducts);
 
 //Route to get product Orders by user
-// router.get('/orders', authMiddleware, getOrderHistory);
+router.delete('/delete/:id', authMiddleware, deleteProduct);
 
 
 // Route to get product by 6-digit product ID
 router.get('/:id', getProductByProductId);
+
+router.put('/:id', updateProduct)
 
 
 export default router;

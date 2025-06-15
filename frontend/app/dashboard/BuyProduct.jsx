@@ -1,6 +1,7 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+"use client";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import ProductCard from "@/components/ProductCard";
 
 export default function BuyProduct() {
   const [products, setProducts] = useState([]);
@@ -9,7 +10,7 @@ export default function BuyProduct() {
   useEffect(() => {
     const fetchPurchasedProducts = async () => {
       try {
-        const res = await axios.get('/api/products/purchased', {
+        const res = await axios.get("/api/products/purchased", {
           withCredentials: true, // send token cookie
         });
         console.log(res.data);
@@ -25,7 +26,9 @@ export default function BuyProduct() {
   }, []);
 
   if (loading) {
-    return <p className="text-center py-6">Loading your purchased products...</p>;
+    return (
+      <p className="text-center py-6">Loading your purchased products...</p>
+    );
   }
 
   // if (products.length === 0) {
@@ -33,26 +36,22 @@ export default function BuyProduct() {
   // }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {products.length > 0 ?(
-        products.map(product => (
-        <div key={product._id} className="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition">
-          {product.images?.[0] && (
-            <img
-              src={product.images[0]}
-              alt={product.name}
-              className="w-full h-40 object-cover rounded-md mb-4"
-            />
-          )}
-          <h3 className="text-lg font-semibold">{product.name}</h3>
-          <p className="text-gray-700">₹{product.price}</p>
-          <p className="text-sm text-gray-400">Product ID: {product.productId}</p>
-        </div>
-      ))
-      ):(
-        <p className="text-center text-gray-500 py-6">You haven’t purchased any products yet.</p>
-      )}
+      <div className="min-h-[calc(100vh-300px)] flex justify-center p-4 md:p-10">
+        <div className="space-y-4 w-full max-w-4xl">
+          <h2 className="text-lg font-semibold text-gray-700 text-center">
+            My Purchased Products
+          </h2>
 
-    </div>
+          {products.length === 0 ? (
+            <p className="text-gray-500 text-center">
+              You haven’t purchased any products yet.
+            </p>
+          ) : (
+            products.map((product) => (
+              <ProductCard key={product._id} product={product.productId} />
+            ))
+          )}
+        </div>
+      </div>
   );
 }
