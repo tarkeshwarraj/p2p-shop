@@ -1,7 +1,7 @@
 'use client'
 import React,{useState} from 'react';
 import ProductCard from '@/components/ProductCard';
-import ProductList from '@/components/ProsuctList';
+import ProductList from '@/components/ProductList';
 
 const Page = () => {  
   const [filters, setFilters] = useState({
