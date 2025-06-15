@@ -35,7 +35,7 @@ export const AppContextProvider = ({children}) => {
     //Get All Products
     const fetchAllProduct = async (req, res) => {
         try {
-        const res = await axios.get("http://localhost:5000/api/products/all");
+        const res = await axios.get("/api/products/all");
         setProduct(res.data);
         console.log(product);
         } catch (err) {
