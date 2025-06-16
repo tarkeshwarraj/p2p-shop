@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 
 export default function AuthForm() {
   const router = useRouter();
-  const { axios } = useAppContext();
+  const { axios, user, setUser } = useAppContext();
 
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({
@@ -31,7 +31,7 @@ export default function AuthForm() {
         password: form.password,
       },);
       toast.success("Logged in successfully!")
-      console.log(res);
+      setUser(res.data.user.id);
     } else {
       // TODO: call signup API
       const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`, {

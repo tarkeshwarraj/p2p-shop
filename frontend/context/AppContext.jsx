@@ -23,7 +23,8 @@ export const AppContextProvider = ({children}) => {
             const {data} = await axios.get('/api/auth/is-auth');
             // console.log(data);
             if(data.success){
-                setUser(data.user);
+                // setUser(data.user);
+
                 localStorage.setItem('user',  JSON.stringify(data.user)); //save the user at localstorage
             }
         }catch(err){
@@ -32,6 +33,8 @@ export const AppContextProvider = ({children}) => {
             //localStorage.removeItem('user'); //Clear on error
         }
     }
+
+    // console.log(user);
 
     //Get All Products
     const fetchAllProduct = async (req, res) => {
