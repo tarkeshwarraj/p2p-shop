@@ -14,21 +14,22 @@ export const AppContext = createContext();
 export const AppContextProvider = ({children}) => {
     
     const [selectedProductId, setSelectedProductId] = useState(null);
-    const [user, setUser, ] = useState(null);
+    const [user, setUser] = useState(null);
     const [product, setProduct] = useState([]);
 
     //Fetch User Auth Status
     const fetchUser = async(req, res) => {
         try{
             const {data} = await axios.get('/api/auth/is-auth');
-            console.log(data);
+            // console.log(data);
             if(data.success){
                 setUser(data.user);
                 localStorage.setItem('user',  JSON.stringify(data.user)); //save the user at localstorage
             }
-        }catch(error){
-            setUser(null);
-             localStorage.removeItem('user'); //Clear on error
+        }catch(err){
+            console.error("Something wrong with fetchUser function:", err )
+            // setUser(null);
+            //localStorage.removeItem('user'); //Clear on error
         }
     }
 

@@ -29,9 +29,9 @@ export default function AuthForm() {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, {
         email: form.email,
         password: form.password,
-      });
+      },);
       toast.success("Logged in successfully!")
-      console.log(res.data);
+      console.log(res);
     } else {
       // TODO: call signup API
       const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`, {
@@ -45,8 +45,8 @@ export default function AuthForm() {
     //Redirect to dashboard on success
     router.push("/dashboard");
 
-    }catch(error){
-      console.error("Auth error:", error.response?.data || error.message);
+    }catch(err){
+      console.log("Auth error:", err.response?.data || err.message);
     }
   };
 

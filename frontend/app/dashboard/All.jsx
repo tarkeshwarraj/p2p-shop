@@ -19,7 +19,7 @@ export default function All() {
   useEffect(()=>{
     const fetchUserProducts = async () => {
       try{
-        const res = await axios.get(`http://localhost:5000/api/products/user`,{ withCredentials: true });
+        const res = await axios.get(`/api/products/user`,{ withCredentials: true });
         setMyProducts(res.data);
 
       }catch(err){
