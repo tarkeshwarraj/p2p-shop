@@ -1,23 +1,47 @@
 'use client'
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 import DashboardHeader from "@/components/dashboardComponents/DashboardHeader";
 import All from "./All";
 import SellProduct from './SellProduct';
 import BuyProduct from './BuyProduct';
-import OrderHistory from './OrderHistory';
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState('all');
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  const renderTabComponent =() => {
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/auth/check', {
+          credentials: 'include', // 👈 cookie send करने के लिए जरूरी है
+        });
+
+        if (res.status !== 200) {
+          router.push('/login'); // 👈 Redirect to login
+        } else {
+          setLoading(false);
+        }
+      } catch (error) {
+        router.push('/login');
+      }
+    };
+
+    checkAuth();
+  }, [router]);
+
+  if (loading) return <p>Loading...</p>;
+
+  const renderTabComponent = () => {
     switch (activeTab) {
       case 'sell':
-        return <SellProduct/>
+        return <SellProduct />;
       case 'buy':
-        return <BuyProduct/>
+        return <BuyProduct />;
       case 'all':
-        default:
-          return <All/>;
+      default:
+        return <All />;
     }
   };
 
@@ -25,7 +49,6 @@ export default function DashboardPage() {
     <main className="min-h-screen bg-gray-50 p-6">
       <DashboardHeader activeTab={activeTab} setActiveTab={setActiveTab} />
       {renderTabComponent()}
-      {/* Add more sections here */}
     </main>
   );
 }
