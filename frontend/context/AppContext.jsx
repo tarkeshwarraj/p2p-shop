@@ -23,14 +23,10 @@ export const AppContextProvider = ({children}) => {
             const {data} = await axios.get('/api/auth/is-auth');
             // console.log(data);
             if(data.success){
-                // setUser(data.user);
-
                 localStorage.setItem('user',  JSON.stringify(data.user)); //save the user at localstorage
             }
         }catch(err){
             console.error("Something wrong with fetchUser function:", err )
-            // setUser(null);
-            //localStorage.removeItem('user'); //Clear on error
         }
     }
 
