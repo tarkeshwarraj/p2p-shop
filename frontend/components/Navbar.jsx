@@ -72,7 +72,7 @@ const Navbar = () => {
         )}
         
         <li>
-          <Link className="hover:text-gray-500/80 transition" href="/portfolio">
+          <Link className="hover:text-gray-500/80 transition" href="/">
             Portfolio
           </Link>
         </li>
@@ -192,7 +192,7 @@ const Navbar = () => {
                 </li>
             )}
             <li>
-              <Link className="text-sm" href="/portfolio">
+              <Link className="text-sm" href="/">
                 Portfolio
               </Link>
             </li>
