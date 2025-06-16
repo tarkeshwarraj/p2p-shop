@@ -15,41 +15,60 @@ export default function AuthForm() {
     email: "",
     password: "",
   });
+  
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    let userData = null;
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try{
-    
     if (isLogin) {
-      // TODO: call login API
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, {
-        email: form.email,
-        password: form.password,
-      },);
-      toast.success("Logged in successfully!")
-      setUser(res.data.user);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`,
+        {
+          email: form.email,
+          password: form.password,
+        },
+        {
+          withCredentials: true, // ✅ जरूरी
+        }
+      );
+      toast.success("Logged in successfully!");
+      userData = res.data.user;
     } else {
-      // TODO: call signup API
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`, {
-        name: form.name,
-        email: form.email,
-        password: form.password,
-      });
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`,
+        {
+          name: form.name,
+          email: form.email,
+          password: form.password,
+        }
+      );
       toast.success("Signup successful");
+
+      // ✅ Auto-login after signup
+      const loginRes = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`,
+        {
+          email: form.email,
+          password: form.password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      userData = loginRes.data.user;
     }
 
-    //Redirect to dashboard on success
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
+
     router.push("/dashboard");
+  } catch (err) {
+    console.error("Auth error:", err.response?.data || err.message);
+    toast.error(err.response?.data?.error || "Login failed");
+  }
+};
 
-    }catch(err){
-      console.log("Auth error:", err.response?.data || err.message);
-    }
-  };
 
   return (
     <div className="flex min-h-screen w-full">
