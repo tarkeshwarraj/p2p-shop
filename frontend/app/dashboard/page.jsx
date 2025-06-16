@@ -1,54 +1,27 @@
-'use client'
-import { useState, useEffect } from "react";
-import { useRouter } from 'next/navigation';
-import DashboardHeader from "@/components/dashboardComponents/DashboardHeader";
-import All from "./All";
-import SellProduct from './SellProduct';
-import BuyProduct from './BuyProduct';
+// app/dashboard/page.jsx
+import { cookies } from 'next/headers';
+import DashboardClientPage from '@/components/DashboardClientPage';
 
-export default function DashboardPage() {
-  const [activeTab, setActiveTab] = useState('all');
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
+export default async function DashboardPage() {
+  const cookieStore = cookies();
+  const token = cookieStore.get('token')?.value;
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await fetch('http://localhost:5000/api/auth/check', {
-          credentials: 'include', // 👈 cookie send करने के लिए जरूरी है
-        });
+  // 🔐 Backend को token भेजकर verify करो
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/is-auth`, {
+    headers: {
+      Cookie: `token=${token}`,
+    },
+    cache: 'no-store', // SSR
+  });
 
-        if (res.status !== 200) {
-          router.push('/login'); // 👈 Redirect to login
-        } else {
-          setLoading(false);
-        }
-      } catch (error) {
-        router.push('/login');
-      }
-    };
+  const data = await res.json();
 
-    checkAuth();
-  }, [router]);
+  if (!res.ok || !data.success) {
+    // Redirect on server
+    return redirect('/login');
+  }
 
-  if (loading) return <p>Loading...</p>;
+  const user = data.user;
 
-  const renderTabComponent = () => {
-    switch (activeTab) {
-      case 'sell':
-        return <SellProduct />;
-      case 'buy':
-        return <BuyProduct />;
-      case 'all':
-      default:
-        return <All />;
-    }
-  };
-
-  return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <DashboardHeader activeTab={activeTab} setActiveTab={setActiveTab} />
-      {renderTabComponent()}
-    </main>
-  );
+  return <DashboardClientPage user={user} />;
 }
