@@ -44,12 +44,13 @@ export const login = async (req, res) => {
     }); //Token created with secret key
 
     //Secure Cookie set
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      maxAge: 7 * 24 * 60 * 60 * 1000, //7days
-    });
+    res.cookie('token', token, {
+  httpOnly: true,          // सिर्फ server access कर सकता है
+  secure: true,            // HTTPS पर ही काम करेगा (Render में HTTPS होता है ✅)
+  sameSite: 'None',        // अलग-अलग domain के बीच cookie allow करने के लिए ज़रूरी
+  path: '/',               // पूरी site के लिए लागू
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 दिन तक valid रहेगा
+});
 
     //response
     res.status(200).json({

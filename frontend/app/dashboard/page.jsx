@@ -14,6 +14,7 @@ export default async function DashboardPage() {
     },
     cache: 'no-store', // SSR
   });
+  
 
   const data = await res.json();
 
