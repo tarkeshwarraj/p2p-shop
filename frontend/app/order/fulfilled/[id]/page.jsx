@@ -7,10 +7,11 @@ import { assets, image } from "@/lib/assets";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import OrderProgress from "@/components/OrderProgress";
+import axios from '@/lib/axios';
 
 const FulfilledPage = ({ params }) => {
 
-  const { axios, fetchProductById, setSelectedProductId, selectedProductId  } = useAppContext();
+  const { fetchProductById, setSelectedProductId, selectedProductId  } = useAppContext();
   const [singleProduct, setSingleProduct] = useState(null);
   const { id } = use(params); // unwrap params
   const [showDetails, setShowDetails] = useState(false);

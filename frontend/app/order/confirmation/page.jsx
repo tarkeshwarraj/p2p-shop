@@ -4,9 +4,10 @@ import { useAppContext } from '@/context/AppContext';
 import { useEffect, useState } from 'react';
 import { image } from "@/lib/assets";
 import Link from 'next/link';
+import axios from '@/lib/axios';
 
 const OrderConfirmationPage = () => {
-  const { selectedProductId, fetchProductById, axios, user } = useAppContext();
+  const { selectedProductId, fetchProductById, user } = useAppContext();
   const [product, setProduct] = useState(null);
 
   useEffect(() => {

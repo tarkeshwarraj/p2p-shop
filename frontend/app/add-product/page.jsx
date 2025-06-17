@@ -3,7 +3,7 @@
 import { useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
-import axios from 'axios';
+import axios from '@/lib/axios';
 
 const AddProduct = () => {
   const router = useRouter();

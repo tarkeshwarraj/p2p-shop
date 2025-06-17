@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import ProductCard from "@/components/ProductCard";
 import { useRouter } from "next/navigation";
+import axios from '@/lib/axios';
 
 const boxIcon =
   "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/e-commerce/boxIcon.svg";
 
 export default function All() {
-  const { axios, user, setProduct } = useAppContext();
+  const { user, setProduct } = useAppContext();
   const [myProducts, setMyProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();

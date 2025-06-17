@@ -4,10 +4,11 @@ import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import axios from '@/lib/axios';
 
 export default function AuthForm() {
   const router = useRouter();
-  const { axios, user, setUser } = useAppContext();
+  const { user, setUser } = useAppContext();
 
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from '@/lib/axios';
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft } from 'lucide-react';
 
