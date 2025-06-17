@@ -39,6 +39,9 @@ export default function AuthForm() {
       );
       toast.success("Logged in successfully!");
       userData = res.data.user;
+      localStorage.setItem('token', res.data.token)
+      console.log(userData);
+      console.log(res.data.token)
     } else {
       await axios.post(
         '/api/auth/signup',
