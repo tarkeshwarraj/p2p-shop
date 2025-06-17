@@ -69,7 +69,6 @@ export default function AuthForm() {
 
     router.push("/dashboard");
   } catch (err) {
-    console.error("Auth error:", err.response?.data || err.message);
     toast.error(err.response?.data?.error || "Login failed");
   }
 };

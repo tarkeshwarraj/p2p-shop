@@ -2,35 +2,37 @@
 import { cookies } from 'next/headers';
 import DashboardClientPage from './DashboardClientPage';
 import { redirect } from 'next/navigation';
-import axios from 'axios';
+import axios from '@/lib/axios';
 
 export default async function DashboardPage() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies(); // ✅ await जरूरी है (Next.js 14+)
   const token = cookieStore.get('token')?.value;
 
   if (!token) {
-    return redirect('/login');
+    console.log("No token")
+    return redirect('https://p2p-shop-1.onrender.com/login');
   }
 
   try {
     // 🔐 Axios से token भेजकर verify करो
-    const res = await axios.get('/api/auth/is-auth', {
+    const res = await axios.get('https://p2p-shop.onrender.com/auth/is-auth', {
       headers: {
         Cookie: `token=${token}`, // ✅ manually pass cookie
       },
+      withCredentials: true,
     });
 
     const data = res.data;
-    console.log(data);
+    console.log(res);
 
     if (!res.status === 200 || !data.success) {
-      return redirect('/login');
+      return redirect('https://p2p-shop-1.onrender.com/login');
     }
 
     const user = data.user;
     return <DashboardClientPage user={user} />;
   } catch (err) {
     console.error("SSR Auth Error:", err.response?.data || err.message);
-    return redirect('/login');
+    return redirect('https://p2p-shop-1.onrender.com/login');
   }
 }
