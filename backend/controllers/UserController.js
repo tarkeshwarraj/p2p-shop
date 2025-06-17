@@ -44,13 +44,7 @@ export const login = async (req, res) => {
     }); //Token created with secret key
 
     //Secure Cookie set
-    res.cookie('token', token, {
-      httpOnly: false, // सिर्फ server access कर सकता है
-      secure: true, // HTTPS पर ही काम करेगा (Render में HTTPS होता है ✅)
-      sameSite: "None", // अलग-अलग domain के बीच cookie allow करने के लिए ज़रूरी
-      path: "/", // पूरी site के लिए लागू
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 दिन तक valid रहेगा
-    });
+    res.json({success:true, token})
 
     //response
     res.status(200).json({
