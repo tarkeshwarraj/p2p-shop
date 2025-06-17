@@ -48,7 +48,7 @@ files.forEach((file) => {
 });
 
     try{
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/add`, formData,{
+      const res = await axios.post('/api/products/add', formData,{
         withCredentials: true, //Required to send cookies
         headers: {
           'Content-Type': 'multipart/form-data',

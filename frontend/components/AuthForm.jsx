@@ -28,7 +28,7 @@ export default function AuthForm() {
 
     if (isLogin) {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`,
+        '/api/auth/login',
         {
           email: form.email,
           password: form.password,
@@ -41,7 +41,7 @@ export default function AuthForm() {
       userData = res.data.user;
     } else {
       await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`,
+        '/api/auth/signup',
         {
           name: form.name,
           email: form.email,
@@ -52,7 +52,7 @@ export default function AuthForm() {
 
       // ✅ Auto-login after signup
       const loginRes = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`,
+        '/api/auth/login',
         {
           email: form.email,
           password: form.password,

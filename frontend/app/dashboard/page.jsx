@@ -14,7 +14,7 @@ export default async function DashboardPage() {
 
   try {
     // 🔐 Axios से token भेजकर verify करो
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/is-auth`, {
+    const res = await axios.get('/api/auth/is-auth', {
       headers: {
         Cookie: `token=${token}`, // ✅ manually pass cookie
       },
