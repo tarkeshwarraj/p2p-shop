@@ -21,6 +21,7 @@ export default async function DashboardPage() {
     });
 
     const data = res.data;
+    console.log(data);
 
     if (!res.status === 200 || !data.success) {
       return redirect('/login');

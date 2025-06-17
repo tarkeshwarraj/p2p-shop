@@ -14,7 +14,7 @@ const app = express();
 
 //Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL, // आपका frontend का exact URL
+  origin: 'https://p2p-shop-1.onrender.com', // आपका frontend का exact URL
   credentials: true,                          // Cookie भेजने की अनुमति
 }));
 
