@@ -9,6 +9,7 @@ export const AppContextProvider = ({children}) => {
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [user, setUser] = useState(null);
     const [product, setProduct] = useState([]);
+    const [token, setToken] = useState(null);
 
     const fetchUser = async () => {
         try {
@@ -48,6 +49,8 @@ export const AppContextProvider = ({children}) => {
     const value = {
         axios,
         user,
+        token,
+        setToken,
         setUser,
         product,
         setProduct,
