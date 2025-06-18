@@ -4,10 +4,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAppContext } from "@/context/AppContext";
+import DashboardClientPage from "./DashboardClientPage";
 
 const Dashboard = () => {
   const { user } = useAppContext();
   const router = useRouter();
+  console.log(user);
 
   useEffect(() => {
     if (!user) {
