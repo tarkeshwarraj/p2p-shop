@@ -1,5 +1,4 @@
 'use client';
-
 import { useAppContext } from '@/context/AppContext';
 import { useEffect, useState } from 'react';
 import { image } from "@/lib/assets";

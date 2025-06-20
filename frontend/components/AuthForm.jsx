@@ -8,7 +8,7 @@ import axios from '@/lib/axios';
 
 export default function AuthForm() {
   const router = useRouter();
-  const { user, setUser } = useAppContext();
+  const { user, setUser , token ,setToken} = useAppContext();
 
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({
@@ -38,10 +38,11 @@ export default function AuthForm() {
         }
       );
       toast.success("Logged in successfully!");
-      userData = res.data.user;
+      userData = res.data.token;
+      setToken = res.data.token;
       localStorage.setItem('token', res.data.token)
-      console.log(userData);
-      console.log(res.data.token)
+      // console.log(userData);
+      // console.log(res.data.token)
     } else {
       await axios.post(
         '/api/auth/signup',

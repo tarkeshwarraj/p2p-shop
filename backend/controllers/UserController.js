@@ -63,7 +63,8 @@ export const login = async (req, res) => {
 //Check Auth : /api/user/is-auth
 export const isAuth = async (req, res) => {
   try {
-    const userId = req.user.userId; // ✅ this is safe and correct 68390237f80978a7f96d13e0
+    const userId = req.user.userId || req.user.id; // ✅ this is safe and correct 68390237f80978a7f96d13e0
+    console.log(`user controller ${userId}`);
 
     const user = await User.findById(userId).select("-password");
 

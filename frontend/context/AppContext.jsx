@@ -12,8 +12,14 @@ export const AppContextProvider = ({children}) => {
     const [token, setToken] = useState(null);
 
     const fetchUser = async () => {
+        console.log(`fetch token frontend ${token}`);
         try {
-            const { data } = await axios.get('/api/auth/is-auth');
+            const { data } = await axios.get('/api/auth/is-auth',{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            console.log(data);
             if (data.success) {
                 setUser(data.user); // ✅ FIXED: Update state too
                 localStorage.setItem('user', JSON.stringify(data.user));
@@ -42,9 +48,11 @@ export const AppContextProvider = ({children}) => {
     }, []);
 
     useEffect(() => {
+         if (token) {
         fetchUser();
         fetchAllProduct();
-    }, []);
+    }
+    }, [token]);
 
     const value = {
         axios,
