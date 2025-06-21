@@ -1,4 +1,3 @@
-// app/dashboard/All.jsx
 "use client";
 import { useEffect, useState } from "react";
 import { useAppContext } from "@/context/AppContext";
@@ -6,42 +5,45 @@ import ProductCard from "@/components/ProductCard";
 import { useRouter } from "next/navigation";
 import axios from '@/lib/axios';
 
-const boxIcon =
-  "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/e-commerce/boxIcon.svg";
-
 export default function All() {
-  const { user, setProduct } = useAppContext();
+  const { user, setProduct, token } = useAppContext(); // ✅ token include किया गया
   const [myProducts, setMyProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-
-
-  useEffect(()=>{
+  useEffect(() => {
     const fetchUserProducts = async () => {
-      try{
-        const res = await axios.get(`/api/products/user`,{ withCredentials: true });
+      try {
+        const res = await axios.get(`/api/products/user`, {
+          headers: {
+            Authorization: `Bearer ${token}` // ✅ token भेजा गया
+          }
+        });
         setMyProducts(res.data);
-
-      }catch(err){
+      } catch (err) {
         console.error("Error fetching user products", err);
-      }finally{
+      } finally {
         setLoading(false);
       }
     };
 
-    if(user?._id){
+    if (user?._id && token) {
       fetchUserProducts();
     }
-  },[user]);
+  }, [user, token]);
 
   const handleEdit = (productId) => {
-  router.push(`/order/fulfilled/${productId}/edit`);
-};
+    router.push(`/order/fulfilled/${productId}/edit`);
+  };
+
   const handleDelete = async (productId) => {
     if (confirm("Are you sure you want to delete this product?")) {
       try {
-        await axios.delete(`/api/products/delete/${productId}`, { withCredentials: true });
+        await axios.delete(`/api/products/delete/${productId}`, {
+          headers: {
+            Authorization: `Bearer ${token}` // ✅ same token use
+          }
+        });
         setMyProducts((prev) => prev.filter((p) => p._id !== productId));
       } catch (err) {
         console.error("Failed to delete product", err);
@@ -49,9 +51,8 @@ export default function All() {
     }
   };
 
-
   return (
-    <div className="min-h-[calc(100vh-300px)] flex justify-center p-4 md:p-10"> 
+    <div className="min-h-[calc(100vh-300px)] flex justify-center p-4 md:p-10">
       <div className="space-y-4 w-full max-w-4xl">
         <h2 className="text-lg font-semibold text-gray-700 text-center">
           My Products
