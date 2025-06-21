@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import axios from '@/lib/axios';
 
 export default function All() {
-  const { user, setProduct, token } = useAppContext(); // ✅ token include किया गया
+  const { user, token } = useAppContext(); // ✅ token add किया गया
   const [myProducts, setMyProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -16,7 +16,7 @@ export default function All() {
       try {
         const res = await axios.get(`/api/products/user`, {
           headers: {
-            Authorization: `Bearer ${token}` // ✅ token भेजा गया
+            Authorization: `Bearer ${token}` // ✅ token header में भेजा गया
           }
         });
         setMyProducts(res.data);
@@ -30,7 +30,7 @@ export default function All() {
     if (user?._id && token) {
       fetchUserProducts();
     }
-  }, [user, token]);
+  }, [user, token]); // ✅ token को भी dependency में रखा
 
   const handleEdit = (productId) => {
     router.push(`/order/fulfilled/${productId}/edit`);
@@ -41,7 +41,7 @@ export default function All() {
       try {
         await axios.delete(`/api/products/delete/${productId}`, {
           headers: {
-            Authorization: `Bearer ${token}` // ✅ same token use
+            Authorization: `Bearer ${token}` // ✅ delete में भी भेजा गया
           }
         });
         setMyProducts((prev) => prev.filter((p) => p._id !== productId));

@@ -51,6 +51,8 @@ export const AppContextProvider = ({children}) => {
          if (token) {
         fetchUser();
         fetchAllProduct();
+        const storedToken = localStorage.getItem("token");
+  if (storedToken) setToken(storedToken);
     }
     }, [token]);
 
